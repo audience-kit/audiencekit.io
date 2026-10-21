@@ -1,0 +1,19 @@
+dist/
+.astro/
+node_modules/
+
+# Bundles exported from a local API checkout, and the SDK checkout
+.bundles/
+.sdk/
+
+# Installed by scripts/bundle.mjs from the API's bundle
+src/content/docs/start/
+src/content/docs/api/
+src/content/docs/guides/
+src/theme/
+src/bundle.json
+public/graphql/
+
+# Imported by scripts/sdk.mjs from audience-kit-sdk (and the Ruby page, from the bundle)
+src/content/docs/sdks/
+src/sdk.json
