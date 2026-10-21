@@ -1,0 +1,122 @@
+/*
+ * Maps the AudienceKit design system onto Starlight's theme variables. The token values come from
+ * admin/src/design/tokens.css (generated from the design system's tokens.json), which Starlight
+ * loads first; its default "light" and "dark" themes match Starlight's data-theme values.
+ * Starlight's gray scale runs from --sl-color-white (strongest text) to --sl-color-black (page).
+ */
+
+/* Shared by both modes: --ink, --accent and friends switch with data-theme in tokens.css. */
+:root {
+	--sl-font: var(--font-sans);
+
+	--sl-color-gray-1: var(--ink);
+	--sl-color-gray-2: var(--ink);
+	--sl-color-gray-3: var(--ink-muted);
+	--sl-color-gray-4: var(--border-strong);
+	--sl-color-gray-5: var(--border);
+
+	--sl-color-accent-low: var(--accent-soft);
+	--sl-color-accent: var(--accent);
+	--sl-color-text-accent: var(--accent-ink);
+	--sl-color-text-invert: var(--on-accent);
+	--sl-color-hairline-light: var(--border);
+	--sl-color-hairline: var(--border);
+	--sl-color-hairline-shade: var(--border);
+}
+
+/* Dark: the page is the wash; nav and sidebar share it, code and cards sit raised. */
+:root[data-theme='dark'] {
+	--sl-color-white: #ffffff;
+	--sl-color-gray-6: var(--surface-raised);
+	--sl-color-black: var(--surface);
+	--sl-color-accent-high: var(--accent-strong);
+	--sl-color-bg-nav: var(--surface);
+	--sl-color-bg-sidebar: var(--surface);
+	--sl-color-bg-inline-code: var(--control-fill);
+}
+
+/* Light: reading happens on a white raised page, with the grey wash for nav and sidebar. */
+:root[data-theme='light'] {
+	--sl-color-white: var(--ink);
+	--sl-color-gray-6: var(--surface);
+	--sl-color-gray-7: var(--surface-sunken);
+	--sl-color-black: var(--surface-raised);
+	--sl-color-accent-high: var(--accent-ink);
+	--sl-color-bg-nav: var(--surface-raised);
+	--sl-color-bg-sidebar: var(--surface);
+	--sl-color-bg-inline-code: var(--surface);
+}
+
+/* The wordmark: there is no AudienceKit logo yet, so the name is set in Figtree 800. */
+.site-title {
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	color: var(--ink);
+}
+
+/* The spectrum ribbon under the header: decorative only, as the design system allows. */
+.header::after {
+	content: '';
+	position: absolute;
+	inset: auto 0 -1px 0;
+	height: 3px;
+	background: linear-gradient(
+		90deg,
+		var(--spectrum-1) 0 16.66%,
+		var(--spectrum-2) 16.66% 33.33%,
+		var(--spectrum-3) 33.33% 50%,
+		var(--spectrum-4) 50% 66.66%,
+		var(--spectrum-5) 66.66% 83.33%,
+		var(--spectrum-6) 83.33% 100%
+	);
+	pointer-events: none;
+}
+.page > header {
+	position: relative;
+}
+
+/* Shape: 6px controls, 8px cards. */
+.sl-markdown-content :is(pre, .expressive-code .frame, table),
+.card,
+.sl-link-card {
+	border-radius: 8px;
+}
+.sl-link-button,
+starlight-tabs [role='tab'],
+.sl-markdown-content :not(pre) > code {
+	border-radius: 6px;
+}
+
+/* Focus ring: 2px solid focus, 2px offset. */
+:focus-visible {
+	outline: 2px solid var(--focus);
+	outline-offset: 2px;
+}
+
+/* Primary buttons use the accent fill with on-accent text. */
+.sl-link-button.primary {
+	background: var(--accent);
+	border-color: var(--accent);
+	color: var(--on-accent);
+}
+.sl-link-button.primary:hover {
+	background: var(--accent-strong);
+	border-color: var(--accent-strong);
+}
+
+/* Tables read as part of the page rather than as grids. */
+.sl-markdown-content table {
+	font-size: var(--sl-text-sm);
+}
+.sl-markdown-content th {
+	background: var(--surface-sunken);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition: none !important;
+		animation: none !important;
+	}
+}

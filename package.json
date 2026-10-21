@@ -1,0 +1,26 @@
+{
+  "name": "developer-audiencekit-com",
+  "private": true,
+  "type": "module",
+  "description": "developer.audiencekit.com, the AudienceKit developer documentation (Astro Starlight), built from the API docs bundle and the public SDK.",
+  "scripts": {
+    "bundle": "node scripts/bundle.mjs",
+    "sdk": "node scripts/sdk.mjs",
+    "reference": "node scripts/graphql-reference.mjs",
+    "sources": "npm run bundle && npm run sdk && npm run reference",
+    "predev": "npm run sources",
+    "dev": "astro dev",
+    "prebuild": "npm run sources",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.6",
+    "astro": "^7.3.5",
+    "graphql": "^16.14.2",
+    "sharp": "^0.35.5"
+  },
+  "allowScripts": {
+    "fsevents@2.3.3": true
+  }
+}

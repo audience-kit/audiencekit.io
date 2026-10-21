@@ -1,0 +1,52 @@
+name: Site
+
+# Builds developer.audiencekit.com from the API's docs bundles (bundles/main and bundles/next, committed to main by the
+# API repository's Developer docs workflow on every build of its main and next branches) and the public
+# audience-kit-sdk, and
+# publishes it to gh-pages, which GitHub Pages serves with the custom domain developer.audiencekit.com.
+# A daily run picks up SDK changes, which don't trigger this repository.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '17 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Publishes queue behind each other; a new push to a PR cancels that PR's older run.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || 'publish' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
+        with:
+          repository: lwm-luminx/audience-kit-sdk
+          path: .sdk
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist
+      - if: github.event_name != 'pull_request'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: dist
+          cname: developer.audiencekit.com
+          force_orphan: true
+          commit_message: Publish developer.audiencekit.com

@@ -1,0 +1,41 @@
+---
+title: Build for the places your people go
+description: Developer documentation for AudienceKit, the multi-tenant platform for audiences, places and events.
+template: splash
+hero:
+  tagline: AudienceKit links audiences (sub-cultures and communities) to the real-world venues, people and events they care about. One API serves every audience, and each one keeps its own name, domain and look.
+  actions:
+    - text: Get started
+      link: /start/introduction/
+      variant: primary
+    - text: GraphQL reference
+      link: /api/graphql-reference/
+      variant: secondary
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<CardGrid>
+	<Card title="One API, many audiences">
+		Every audience is a tenant with its own locales, venues, people and events. Scope a GraphQL request to one audience with its endpoint path.
+	</Card>
+	<Card title="Themed per audience">
+		Each audience picks a design system preset and may override its accent and spectrum colors. The API checks every override for contrast.
+	</Card>
+	<Card title="Kept fresh by machines">
+		Service tokens let workers such as the researcher verify venues and events and upsert them with provenance.
+	</Card>
+	<Card title="Open-source SDKs">
+		Swift and Kotlin clients, MIT licensed, ship together on one version from [audience-kit-sdk](https://github.com/lwm-luminx/audience-kit-sdk).
+	</Card>
+</CardGrid>
+
+## Where to go next
+
+<CardGrid>
+	<LinkCard title="Core concepts" href="/start/concepts/" description="Audiences, locales, venues, people and events, and how they relate." />
+	<LinkCard title="Authentication" href="/api/authentication/" description="User JWTs, application API keys, admin access and service tokens." />
+	<LinkCard title="Theme an audience" href="/guides/theming/" description="Presets, tenant tokens and the contrast rules the API enforces." />
+	<LinkCard title="Swift SDK" href="/sdks/swift/" description="Sign people in and read an audience from an iOS or macOS app." />
+	<LinkCard title="Realtime" href="/api/realtime/" description="GraphQL subscriptions for chat, presence and the door." />
+</CardGrid>
