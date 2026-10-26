@@ -35,7 +35,7 @@ npm run dev     # http://localhost:4321
 npm run build   # writes the static site to dist/
 ```
 
-`dev` and `build` first install the sources (`npm run sources`). The bundle comes from `bundles/main/`; to preview a change to the API's pages before pushing it, run `node scripts/bundle.mjs ../audience-kit` (or `mise run docs:dev` in the API checkout), which exports a fresh bundle from that checkout. The SDK pages come from `../audience-kit-sdk`, or a shallow clone. `node scripts/sdk.mjs <dir>` takes another directory.
+`dev` and `build` first install the sources (`npm run sources`). The bundle comes from `bundles/main/`; to preview a change to the API's pages before pushing it, run `node scripts/bundle.mjs ../audience_kit_api`, which exports a fresh bundle from that checkout. The SDK pages come from `../audience-kit-sdk`, or a shallow clone. `node scripts/sdk.mjs <dir>` takes another directory.
 
 ## Publishing
 
