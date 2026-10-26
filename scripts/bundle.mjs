@@ -1,11 +1,11 @@
 // Installs the AudienceKit API's documentation bundle into the site: its pages into src/content/docs/, its theme into
 // src/theme/, and its schema dumps and validator into public/graphql/ (served at /graphql/… for client repositories'
-// CI). The bundle is exported by the private audience-kit repository (api/bin/developer-docs.mjs) on every build of
+// CI). The bundle is exported by the private audience_kit_api repository (bin/developer-docs.mjs) on every build of
 // its main and next branches, and committed to this repository as bundles/main/ and bundles/next/.
 //
-//   node scripts/bundle.mjs                 # bundles/
-//   node scripts/bundle.mjs ../audience-kit # export from a local checkout of the API (to preview a docs change)
-//   node scripts/bundle.mjs path/to/bundle  # one bundle directory (one with a manifest.json)
+//   node scripts/bundle.mjs                      # bundles/
+//   node scripts/bundle.mjs ../audience_kit_api  # export from a local checkout of the API (to preview a docs change)
+//   node scripts/bundle.mjs path/to/bundle       # one bundle directory (one with a manifest.json)
 //
 // The site is built from the main bundle (production). The next bundle's schema dumps are served too, at
 // /graphql/next/…, for clients that track the API's next branch.
@@ -20,11 +20,12 @@ const site = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OWNED = ['start', 'api', 'guides', 'sdks/ruby.md'];
 
 const isBundle = (dir) => existsSync(join(dir, 'manifest.json'));
-const isMonorepo = (dir) => existsSync(join(dir, 'api/bin/developer-docs.mjs'));
+// The exporter in an audience_kit_api checkout, or in the retired audience-kit monorepo's api/ submodule.
+const exporter = (dir) => [join(dir, 'bin/developer-docs.mjs'), join(dir, 'api/bin/developer-docs.mjs')].find((path) => existsSync(path));
 
-function exportFrom(monorepo, channel) {
+function exportFrom(checkout, channel) {
 	const out = join(site, '.bundles', channel);  // gitignored
-	execFileSync('node', [join(monorepo, 'api/bin/developer-docs.mjs'), '--out', out, '--channel', channel], { stdio: 'inherit' });
+	execFileSync('node', [exporter(checkout), '--out', out, '--channel', channel], { stdio: 'inherit' });
 	return out;
 }
 
@@ -33,14 +34,14 @@ function locate(arg, channel) {
 		const dir = resolve(arg);
 		if (isBundle(join(dir, channel))) return join(dir, channel);
 		if (isBundle(dir)) return channel === 'main' ? dir : null;
-		if (isMonorepo(dir)) {
+		if (exporter(dir)) {
 			// The checkout stands in for production; next's schemas still come from bundles/next.
 			if (channel === 'main') return exportFrom(dir, 'local');
-		} else throw new Error(`${arg} is neither a bundle, a directory of bundles, nor an audience-kit checkout`);
+		} else throw new Error(`${arg} is neither a bundle, a directory of bundles, nor an audience_kit_api checkout`);
 	}
 	const committed = join(site, 'bundles', channel);
 	if (isBundle(committed)) return committed;
-	if (channel === 'main') throw new Error('bundles/main/ is missing; pass a bundle or an audience-kit checkout');
+	if (channel === 'main') throw new Error('bundles/main/ is missing; pass a bundle or an audience_kit_api checkout');
 	return null;
 }
 
